@@ -1,28 +1,33 @@
-name: Build
+name: SonarQube Scan
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - main
-
+  pull_request:
 
 jobs:
-  build:
-    name: Build and analyze
+  sonar-scan:
     runs-on: ubuntu-latest
-    
+
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - uses: sonarsource/sonarqube-scan-action@v4
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      # If you wish to fail your job when the Quality Gate is red, uncomment the
-      # following lines. This would typically be used to fail a deployment.
-      # - uses: sonarsource/sonarqube-quality-gate-action@v1
-      #   timeout-minutes: 5
-      #   env:
-      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    # Checkout the code
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # Set up JDK (SonarScanner requires Java)
+    - name: Set up JDK
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'adopt'
+        java-version: '11'
+
+    # Run SonarQube Scan
+    - name: SonarQube Scan
+      uses: sonarsource/sonarqube-scan-action@v4
+      with:
+        args: >
+          -Dsonar.projectKey=shivam2003-dev_CipherIntellect_ed85b78d-4270-4cc6-a731-7793bf79496b
+          -Dsonar.sources=.
+          -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
+          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
