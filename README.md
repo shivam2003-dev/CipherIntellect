@@ -1,3 +1,9 @@
+<a href="https://scan.coverity.com/projects/shivam2003-dev-cipherintellect">
+  <img alt="Coverity Scan Build Status"
+       src="https://scan.coverity.com/projects/31765/badge.svg"/>
+</a>
+<br>
+
 # CipherIntellect 📄
 
 CipherIntellect is an online application designed for handling PDF files. It offers a range of functionalities, including extracting metadata, images, text, and annotations from PDFs. 🔨
